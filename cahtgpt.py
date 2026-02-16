@@ -1,51 +1,32 @@
 import tkinter as tk
-from tkinter import simpledialog
-import numpy as np
-import cv2
+from PIL import Image, ImageTk
 
-# Tkinter input
-opcam = tk.Tk()          # create the root window
-opcam.withdraw()          # hide it
+root = tk.Tk()
 
-thisit = simpledialog.askstring(
-    title="bittttccchh",
-    prompt="Say 'please' if you want to open the camera:"
-) 
+label = tk.Label(root)
+label.pack()
 
-# Open camera
-cam = cv2.VideoCapture(0)
+img1 = Image.open("DSCF7903.jpg")
+img11 = img1.resize((150, 150))
+img111 = ImageTk.PhotoImage(img11)
+img2 = Image.open("DSCF7936.jpg")
+img22 = img2.resize((150, 150))
+img222 = ImageTk.PhotoImage(img22)
 
-if thisit == "please":
-    while True:
-        ret, frame = cam.read()
-        if not ret:
-            print("Failed to grab frame")
-            break
+current = 0
+images = [img111, img222]
 
-        height, width = frame.shape[:2]
+def change_image():
+    global current
+    current += 1
+    if current < len(images):
+        label.config(image=images[current])
+        label.image = images[current]  # keep reference
 
-        # Create black canvas
-        iwan = np.zeros((height, width, 3), dtype=np.uint8)
+button = tk.Button(root, text="Next", command=change_image)
+button.pack()
 
-        # Resize frame
-        mal = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+label.config(image=images[0])
+label.image = images[0]
 
-        # Create 7x7 grid
-        row = np.hstack([mal]*7)
-        son = np.vstack([row]*7)
-
-        # Place grid on canvas
-        iwan[0:son.shape[0], 0:son.shape[1]] = son
-
-        # Show image
-        cv2.imshow("lall", iwan)
-
-        # Press 'l' to exit
-        if cv2.waitKey(1) == ord('l'):
-            break
-
-    cam.release()
-    cv2.destroyAllWindows()
-else:
-    print("\n" * 20)
-    print("how dare you not say please")
+root.mainloop()

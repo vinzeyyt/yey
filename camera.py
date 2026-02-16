@@ -16,10 +16,11 @@ height = int(cam.get(4)) # 4 is height
 if thisit == "please" or thisit == "rotate":
      while True:
          ret, frame = cam.read() # ret ir return it returns if another app is using cam, frame is the captured image,
-     
-         mal = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25) # this resizes the "frame" to 1/4 of its original size, 0, 0 is just the parameter or placeholder for the fx and fy
-         duh = np.hstack([mal] * 3)# np.hstack is horizontal stacking
-         son = np.vstack([duh] * 3) # np.vstack is verltica stacking
+         if not ret:
+            print("you are a bitch")
+         mal = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5) # this resizes the "frame" to 1/4 of its original size, 0, 0 is just the parameter or placeholder for the fx and fy
+         duh = np.hstack([mal] * 1)# np.hstack is horizontal stacking
+         son = np.vstack([duh] * 1) # np.vstack is verltica stacking
          
          iwan = np.zeros((son.shape[0], son.shape[1], 3), dtype=np.uint8) # this is the holder for the image its just black without the code below but its essential for the shape
            # this used to be (height, width, 3) but i changed it to this to always fit the image regardless of the height and width of the image that will be shown
